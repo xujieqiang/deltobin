@@ -2,7 +2,10 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"syscall"
 	"unsafe"
@@ -64,5 +67,22 @@ func main() {
 	} else {
 		fmt.Println("失败！")
 	}
+	cmd := exec.Command("cmd.exe", "/c", "echo", "y", "|powershell", "Clear-RecycleBin", "&", "msg", "%username%", "/time:1")
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stdout.Close()
 
+	err = cmd.Start()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	opB, err := io.ReadAll(stdout)
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		log.Println(string(opB))
+	}
 }
