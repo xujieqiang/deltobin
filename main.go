@@ -85,4 +85,6 @@ func main() {
 	} else {
 		log.Println(string(opB))
 	}
+	fmt.Println("清空成功！")
+
 }
